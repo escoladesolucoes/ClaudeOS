@@ -475,6 +475,69 @@ export class SecretsPanel {
     .toast.visible {
       opacity: 1;
     }
+
+    /* --- Mobile / narrow viewport --- */
+    /* Below 700px the fixed 300px list column leaves almost no room for
+       the detail form, so stack list-over-detail instead of side-by-side. */
+    @media (max-width: 700px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+        overflow-y: auto;
+      }
+
+      .container {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .secrets-list {
+        width: 100%;
+        min-width: 0;
+        max-height: 35vh;
+        border-right: none;
+        border-bottom: 1px solid var(--vscode-panel-border);
+      }
+
+      .secret-detail {
+        padding: 16px;
+      }
+
+      .empty-state {
+        height: auto;
+        padding: 32px 0;
+      }
+
+      .value-row .toggle-btn,
+      .value-row .copy-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        padding: 10px;
+      }
+
+      .actions {
+        flex-wrap: wrap;
+      }
+
+      .actions button {
+        flex: 1 1 auto;
+        min-width: 90px;
+        padding: 10px 16px;
+      }
+
+      .toast {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body>

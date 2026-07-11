@@ -486,6 +486,48 @@ export class HomePanel {
       font-style: italic;
       padding: 16px 0;
     }
+
+    @media (max-width: 480px) {
+      .hero {
+        padding: 28px 20px;
+        border-radius: 0 0 12px 12px;
+      }
+
+      .hero-wordmark {
+        font-size: 22px;
+        letter-spacing: 1px;
+      }
+
+      .hero-tagline {
+        font-size: 12px;
+        margin-bottom: 20px;
+      }
+
+      .btn-primary {
+        width: 100%;
+        padding: 12px 24px;
+      }
+
+      .banner {
+        margin: 16px 20px 0;
+      }
+
+      .section {
+        padding: 16px 20px;
+      }
+
+      .quick-actions-grid,
+      .sessions-grid,
+      .shortcuts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-action-card,
+      .session-card,
+      .shortcut-card {
+        padding: 14px;
+      }
+    }
   </style>
 </head>
 <body>
