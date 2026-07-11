@@ -32,7 +32,17 @@
         "category": "ClaudeOS",
         "icon": "$(home)"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "ClaudeOS Home",
+      "properties": {
+        "claudeos.home.openOnStartup": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically open the ClaudeOS Home panel every time the window starts. Disable to only open it via the \"ClaudeOS: Open Home\" command."
+        }
+      }
+    }
   },
   "devDependencies": {
     "@types/vscode": "^1.85.0",

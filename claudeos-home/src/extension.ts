@@ -32,8 +32,13 @@ export async function activate(
   const client = new SupervisorClient();
   const shortcutStore = new ShortcutStore(context);
 
-  // --- Open home page on startup (locked decision) ---
-  HomePanel.createOrShow(context, client, shortcutStore);
+  // --- Open home page on startup (configurable; defaults to on) ---
+  const openOnStartup = vscode.workspace
+    .getConfiguration("claudeos.home")
+    .get<boolean>("openOnStartup", true);
+  if (openOnStartup) {
+    HomePanel.createOrShow(context, client, shortcutStore);
+  }
 
   // --- Register command to re-open home ---
   const openCmd = vscode.commands.registerCommand(
