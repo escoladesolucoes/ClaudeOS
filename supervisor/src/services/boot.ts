@@ -38,11 +38,19 @@ interface BootServiceOptions {
   extensionInstaller: ExtensionInstaller;
   setBootState: (state: BootState) => void;
   logger?: { info: (msg: string) => void; error: (msg: string) => void };
+  /**
+   * Directory holding the bundled VSIX files copied into the container by
+   * the Dockerfile. Defaults to the real container path; overridable so
+   * tests can point it at an isolated temp directory instead of the real
+   * /app/extensions on disk.
+   */
+  containerExtensionsDir?: string;
 }
 
 export class BootService {
   private readonly dataDir: string;
   private readonly configDir: string;
+  private readonly containerExtensionsDir: string;
   private readonly extensionInstaller: ExtensionInstaller;
   private readonly setBootState: (state: BootState) => void;
   private readonly logger: { info: (msg: string) => void; error: (msg: string) => void };
@@ -53,6 +61,7 @@ export class BootService {
   constructor(options: BootServiceOptions) {
     this.dataDir = options.dataDir;
     this.configDir = join(options.dataDir, "config");
+    this.containerExtensionsDir = options.containerExtensionsDir ?? "/app/extensions";
     this.extensionInstaller = options.extensionInstaller;
     this.setBootState = options.setBootState;
     this.logger = options.logger ?? {
@@ -311,8 +320,14 @@ export class BootService {
   async installExtensions(): Promise<void> {
     // Scan for .vsix files in the extensions directory
     // Check container path first, then project path
+    // NOTE: the container path is the literal /app/extensions/ that the
+    // Dockerfile COPYs the built VSIX into (see Dockerfile lines 138-142).
+    // join(this.configDir, "..", "extensions") previously resolved to
+    // dataDir/extensions (e.g. /data/extensions) instead, so this scan
+    // always came up empty and installExtensions() silently no-op'd on
+    // every boot -- the bundled extensions were never actually installed.
     const extensionsDirs = [
-      join(this.configDir, "..", "extensions"),  // /app/extensions/ in container
+      this.containerExtensionsDir,                // /app/extensions/ in container
       resolve("default-extensions"),              // project root default-extensions/
     ];
 

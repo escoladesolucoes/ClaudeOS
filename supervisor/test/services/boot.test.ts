@@ -36,6 +36,12 @@ describe("BootService.installExtensions", () => {
   function createBootService(installer?: ExtensionInstaller): BootService {
     return new BootService({
       dataDir,
+      // Isolate from the real /app/extensions on disk -- dataDir is an
+      // empty per-test temp dir (only its "config" subdir is populated),
+      // so pointing the container-extensions scan at it keeps these
+      // tests from picking up whatever VSIX happen to be installed on
+      // the machine actually running the test suite.
+      containerExtensionsDir: dataDir,
       extensionInstaller: installer ?? mockInstaller,
       setBootState: mockSetBootState,
       logger: mockLogger,
